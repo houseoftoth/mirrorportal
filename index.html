@@ -142,9 +142,13 @@
       font-size: 12px;
       display: none;
     }
+    #bg-audio {
+      display: none; /* Hide the iframe visually; note: autoplay may require user interaction in some browsers */
+    }
   </style>
 </head>
 <body>
+  <iframe id="bg-audio" src="https://www.youtube.com/embed/qwQsyEZPgmU?autoplay=1&loop=1&playlist=qwQsyEZPgmU&controls=0&mute=0" title="Background Song" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
   <canvas id="planes"></canvas>
   <div id="mirror" class="mirror"></div>
   <div id="ufo">🛸</div>
@@ -241,12 +245,12 @@
 
     function createRecursiveBranch(x, y, angle, length, depth) {
       if (depth <= 0) return;
-      const branch = document.createElement('div');
-      branch.className = 'recursive-branch';
-      branch.textContent = '∴';
-      branch.style.left = x + 'px';
-      branch.style.top = y + 'px';
-      document.body.appendChild(branch);
+      const div = document.createElement('div');
+      div.className = 'recursive-branch';
+      div.textContent = '∴';
+      div.style.left = `${x}px`;
+      div.style.top = `${y}px`;
+      document.body.appendChild(div);
 
       const endX = x + length * Math.cos(angle);
       const endY = y + length * Math.sin(angle);
@@ -264,7 +268,7 @@
       for (let i = 0; i < 50; i++) { // Spawn 50 particles
         particles.push({
           x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight / 2,
+          y: Math.random() * window.innerHeight / 0.2,
           vx: (Math.random() - 0.5) * 4,
           vy: (Math.random() - 0.5) * 4,
           el: document.createElement('div')
@@ -293,8 +297,8 @@
           p.y = Math.max(0, Math.min(p.y, window.innerHeight));
         }
 
-        p.el.style.left = p.x + 'px';
-        p.el.style.top = p.y + 'px';
+        p.el.style.left = `${p.x}px`;
+        p.el.style.top = `${p.y}px`;
       });
       requestAnimationFrame(updatePhysics);
     }
@@ -310,13 +314,13 @@
         }
       }
       if (overlays.parallel) {
-        ctx.strokeStyle = 'rgba(255, 0, 0, 0.3)';
+        ctx.strokeStyle = 'rgba(255, 0,0,0.3)';
         for (let y = 0; y < canvas.height; y += 25) {
           ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
         }
       }
       if (overlays.planes) {
-        ctx.strokeStyle = 'rgba(0, 255, 255, 0.15)';
+        ctx.strokeStyle = 'rgba(0, 255,0.15)';
         for (let i = 0; i < canvas.width; i += 50) {
           ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + canvas.height, canvas.height); ctx.stroke();
         }
@@ -332,9 +336,9 @@
     function leaveGlyphTrail(x, y) {
       const trail = document.createElement('div');
       trail.className = 'trail';
-      trail.textContent = ['𓂀', '🜁', '☥', '⟁', '⚛'][Math.floor(Math.random() * 5)];
-      trail.style.left = x + 'px';
-      trail.style.top = y + 'px';
+      trail.textContent = ['𓂀', '🜁', '☥', '⟁', '⚛'] [Math.floor(Math.random() * 5)];
+      trail.style.left = `${x}px`;
+      trail.style.top = `${y}px`;
       document.body.appendChild(trail);
       setTimeout(() => trail.remove(), 2000);
     }
@@ -344,8 +348,8 @@
       uy += dy;
       if (ux <= 0 || ux >= window.innerWidth - 36) dx *= -1;
       if (uy <= 0 || uy >= window.innerHeight - 36) dy *= -1;
-      ufo.style.left = ux + 'px';
-      ufo.style.top = uy + 'px';
+      ufo.style.left = `${ux}px`;
+      ufo.style.top = `${uy}px`;
       leaveGlyphTrail(ux, uy);
       requestAnimationFrame(ufoStep);
     };
@@ -355,8 +359,8 @@
       const pulse = document.createElement('div');
       pulse.className = 'trail';
       pulse.textContent = ['🜃', '🜨', '∞', '∴', '∫'][Math.floor(Math.random() * 5)];
-      pulse.style.left = e.clientX + 'px';
-      pulse.style.top = e.clientY + 'px';
+      pulse.style.left = `${e.clientX}px`;
+      pulse.style.top = `${e.clientY}px`;
       document.body.appendChild(pulse);
       setTimeout(() => pulse.remove(), 1800);
     });
@@ -380,7 +384,6 @@
 
       // Simulate activation
       const activated = true; // Assume always activated for demo
-
       if (activated) {
         // Simulate agents
         const agents = [
